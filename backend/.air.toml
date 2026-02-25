@@ -1,0 +1,68 @@
+# .air.toml — Air hot-reload configuration
+# Docs: https://github.com/air-verse/air
+
+root = "."
+tmp_dir = "tmp"
+
+[build]
+  # Command that compiles the project (.exe required on Windows)
+  cmd = "go build -o ./tmp/main.exe ./cmd/api/..."
+
+  # Binary produced by cmd (entrypoint replaces deprecated bin)
+  entrypoint = "./tmp/main.exe"
+
+  # Extra args passed to the binary when it starts
+  args_bin = []
+
+  # Watch these file extensions for changes
+  include_ext = ["go", "tmpl", "html", "env"]
+
+  # Exclude these directories from watching
+  exclude_dir = ["tmp", "vendor", "bin"]
+
+  # Exclude files matching these patterns
+  exclude_file = []
+
+  # Exclude unchanged files
+  exclude_unchanged = true
+
+  # Follow symlinks when watching
+  follow_symlink = false
+
+  # Log file for build output (empty = stdout)
+  log = "build-errors.log"
+
+  # Delay before triggering a rebuild after a change (ms)
+  delay = 1000
+
+  # Kill the running process before rebuilding
+  kill_delay = "0s"
+
+  # Send Interrupt signal before killing the process
+  send_interrupt = false
+
+  # Rerun even if no file change was detected
+  rerun = false
+
+  # Rerun delay (ms)
+  rerun_delay = 500
+
+  # Stop running on build errors
+  stop_on_error = false
+
+[log]
+  # Show log timestamps
+  time = true
+
+  # Only show main log (hide build output when no errors)
+  main_only = false
+
+[color]
+  main     = "magenta"
+  watcher  = "cyan"
+  build    = "yellow"
+  runner   = "green"
+
+[misc]
+  # Delete the tmp dir on exit
+  clean_on_exit = true
