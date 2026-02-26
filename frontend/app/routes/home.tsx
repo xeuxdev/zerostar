@@ -1,20 +1,18 @@
 import type { Route } from "./+types/home";
 import { useState, useRef, useEffect } from "react";
-import { Button } from "~/components/ui/button";
-import { Send, Activity, User, Flame, Skull, Ghost } from "lucide-react";
+import { Ghost } from "lucide-react";
+
+import { ChatHeader } from "~/components/chat/header";
+import { ChatInputFooter } from "~/components/chat/input-footer";
+import { ChatMessage } from "~/components/chat/message";
+import { DiagnosticsModal } from "~/components/chat/diagnostics-modal";
+import type { Message } from "~/components/chat/types";
 
 export function meta({}: Route.MetaArgs) {
   return [
     { title: "ZeroStar :: The Void" },
     { name: "description", content: "Speak into the void." },
   ];
-}
-
-type Role = "user" | "model";
-
-interface Message {
-  role: Role;
-  content: string;
 }
 
 export default function Home() {
@@ -152,51 +150,17 @@ export default function Home() {
 
   return (
     <div
-      className={`h-[100dvh] w-full flex flex-col overflow-hidden font-mono text-base transition-colors duration-1000 ${
+      className={`h-dvh w-full flex flex-col overflow-hidden font-mono text-base transition-colors duration-1000 ${
         rageMode ? "bg-[#1a0505] text-[#ff3333]" : "bg-[#0f0f0f] text-[#d4d4d4]"
       }`}
       style={{ fontFamily: "'Space Mono', monospace" }}
     >
-      {/* Brutalist Header */}
-      <header
-        className={`p-4 md:p-6 border-b-[3px] flex items-center justify-between shrink-0 transition-colors duration-700 ${rageMode ? "border-[#ff3333] shadow-[0_4px_30px_rgba(255,51,51,0.2)]" : "border-[#333]"}`}
-      >
-        <div className="flex items-center gap-3">
-          <div
-            className={`p-2 rounded-sm ${rageMode ? "bg-[#ff3333] text-black" : "bg-[#d4d4d4] text-black"} uppercase font-black tracking-tighter text-2xl`}
-          >
-            {rageMode ? (
-              <Skull className="w-6 h-6 animate-pulse" />
-            ) : (
-              <Ghost className="w-6 h-6" />
-            )}
-          </div>
-          <div>
-            <h1 className="text-xl md:text-2xl font-black uppercase tracking-widest leading-none">
-              ZeroStar
-            </h1>
-            <p className="text-xs md:text-sm mt-1 opacity-60 tracking-wider">
-              Antitherapy Substation {rageMode ? "[CRITICAL]" : "[ONLINE]"}
-            </p>
-          </div>
-        </div>
-
-        <Button
-          onClick={handleDiagnose}
-          disabled={isDiagnosing || history.length === 0}
-          className={`uppercase font-bold tracking-widest px-6 py-4 rounded-none border-[2px] transition-all
-            ${
-              rageMode
-                ? "bg-[#1a0505] border-[#ff3333] text-[#ff3333] hover:bg-[#ff3333] hover:text-[#1a0505]"
-                : "bg-transparent border-[#d4d4d4] text-[#d4d4d4] hover:bg-[#0f0f0f] hover:text-[#0f0f0f]"
-            } disabled:opacity-30 disabled:cursor-not-allowed hidden md:flex`}
-        >
-          {isDiagnosing ? "Analyzing..." : "Diagnose"}
-          <Activity
-            className={`ml-2 w-4 h-4 ${isDiagnosing && "animate-spin"}`}
-          />
-        </Button>
-      </header>
+      <ChatHeader
+        rageMode={rageMode}
+        isDiagnosing={isDiagnosing}
+        historyLength={history.length}
+        onDiagnose={handleDiagnose}
+      />
 
       {/* Main Chat Area */}
       <main className="flex-1 overflow-y-auto no-scrollbar relative flex flex-col items-center">
@@ -204,24 +168,9 @@ export default function Home() {
           className="w-full max-w-4xl p-4 md:p-8 flex flex-col gap-6 md:gap-10 pb-32"
           ref={scrollRef}
         >
-          {diagnosis && (
-            <div
-              className={`p-6 border-[3px] ${rageMode ? "border-[#ff3333] bg-[#2a0808]/50" : "border-[#d4d4d4] bg-[#1f1f1f]/50"} relative group`}
-            >
-              <div
-                className={`absolute -top-3 left-4 px-2 font-black uppercase tracking-widest text-sm ${rageMode ? "bg-[#1a0505] text-[#ff3333]" : "bg-[#0f0f0f] text-[#d4d4d4]"}`}
-              >
-                Clinical Diagnosis
-              </div>
-              <p className="leading-relaxed md:text-lg whitespace-pre-wrap mt-2 font-sans tracking-wide">
-                {diagnosis}
-              </p>
-            </div>
-          )}
-
           {history.length === 0 && (
             <div className="flex flex-col items-center justify-center min-h-[40vh] text-center opacity-40 select-none">
-              <Ghost className="w-24 h-24 mb-6 stroke-[1]" />
+              <Ghost className="w-24 h-24 mb-6 stroke-1" />
               <p className="text-xl md:text-3xl tracking-widest uppercase mb-2">
                 Speak
               </p>
@@ -256,152 +205,22 @@ export default function Home() {
         </div>
       </main>
 
-      {/* Input Form */}
-      <footer
-        className={`p-4 md:p-6 border-t-[3px] ${rageMode ? "border-[#ff3333] bg-[#1a0505]" : "border-[#333] bg-[#0f0f0f]"} shrink-0`}
-      >
-        <form
-          className="w-full max-w-4xl mx-auto flex gap-4 items-end"
-          onSubmit={(e) => {
-            e.preventDefault();
-            handleSend();
-          }}
-        >
-          <div className="flex-1 relative group">
-            <textarea
-              className={`w-full min-h-[60px] max-h-[200px] resize-none border-[3px] rounded-none p-4 pr-12 focus:outline-none transition-colors 
-                ${
-                  rageMode
-                    ? "bg-transparent border-[#ff3333] text-[#ff3333] placeholder:text-[#ff3333]/50 focus:bg-[#330a0a]"
-                    : "bg-transparent border-[#555] text-white focus:border-[#d4d4d4]"
-                }`}
-              placeholder="What's your weak excuse..."
-              value={inputVal}
-              onChange={(e) => {
-                setInputVal(e.target.value);
-                e.target.style.height = "auto";
-                e.target.style.height = `${Math.min(e.target.scrollHeight, 200)}px`;
-              }}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" && !e.shiftKey) {
-                  e.preventDefault();
-                  handleSend();
-                }
-              }}
-              disabled={isSending}
-              rows={1}
-            />
-            {rageMode && (
-              <Flame className="absolute right-4 top-1/2 -translate-y-1/2 text-[#ff3333] opacity-20 pointer-events-none w-8 h-8 group-focus-within:opacity-100 transition-opacity" />
-            )}
-          </div>
+      <ChatInputFooter
+        rageMode={rageMode}
+        isSending={isSending}
+        isDiagnosing={isDiagnosing}
+        historyLength={history.length}
+        inputVal={inputVal}
+        setInputVal={setInputVal}
+        handleSend={handleSend}
+        onDiagnose={handleDiagnose}
+      />
 
-          <Button
-            type="submit"
-            disabled={isSending || !inputVal.trim()}
-            className={`h-[60px] w-[60px] shrink-0 rounded-none flex items-center justify-center border-[3px] transition-all
-              ${
-                rageMode
-                  ? "bg-[#ff3333] text-[#1a0505] border-[#ff3333] hover:bg-[#cc0000]"
-                  : "bg-[#d4d4d4] text-[#0f0f0f] border-[#d4d4d4] hover:bg-white"
-              } disabled:opacity-30 disabled:cursor-not-allowed`}
-          >
-            <Send className="w-6 h-6" />
-          </Button>
-        </form>
-
-        {/* Mobile Diagnose Button */}
-        <div className="w-full max-w-4xl mx-auto mt-4 md:hidden">
-          <Button
-            onClick={handleDiagnose}
-            disabled={isDiagnosing || history.length === 0}
-            className={`uppercase w-full font-bold tracking-widest px-6 py-4 rounded-none border-[2px] transition-all
-              ${
-                rageMode
-                  ? "bg-[#1a0505] border-[#ff3333] text-[#ff3333] hover:bg-[#ff3333] hover:text-[#1a0505]"
-                  : "bg-transparent border-[#d4d4d4] text-[#d4d4d4] hover:bg-[#0f0f0f] hover:text-[#d4d4d4]"
-              } disabled:opacity-30`}
-          >
-            {isDiagnosing ? "Analyzing..." : "Diagnose"}
-          </Button>
-        </div>
-      </footer>
-    </div>
-  );
-}
-
-function ChatMessage({
-  msg,
-  isRage,
-  isStreaming,
-}: {
-  msg: Message;
-  isRage: boolean;
-  isStreaming?: boolean;
-}) {
-  const isUser = msg.role === "user";
-
-  return (
-    <div
-      className={`w-full flex ${isUser ? "justify-end" : "justify-start"} group mb-4`}
-    >
-      <div
-        className={`flex gap-4 max-w-[90%] md:max-w-[80%] ${isUser ? "flex-row-reverse" : "flex-row"}`}
-      >
-        {/* Avatar Area */}
-        <div className="shrink-0 pt-2 hidden sm:block">
-          {isUser ? (
-            <div
-              className={`w-10 h-10 border-[2px] flex items-center justify-center
-              ${isRage ? "border-[#ff3333] text-[#ff3333]/70" : "border-[#d4d4d4] text-[#d4d4d4]/70"}`}
-            >
-              <User className="w-5 h-5" />
-            </div>
-          ) : (
-            <div
-              className={`w-10 h-10 border-[2px] flex items-center justify-center
-              ${isRage ? "bg-[#ff3333] text-black border-[#ff3333]" : "bg-[#d4d4d4] text-black border-[#d4d4d4]"}`}
-            >
-              {isRage ? (
-                <Flame className="w-5 h-5 animate-pulse" />
-              ) : (
-                <Ghost className="w-5 h-5" />
-              )}
-            </div>
-          )}
-        </div>
-
-        {/* Message Bubble Brutalist */}
-        <div
-          className={`relative px-4 py-3 md:px-6 md:py-4 border-[2px] 
-          ${
-            isUser
-              ? isRage
-                ? "border-[#ff3333]/50 bg-transparent text-[#ff3333]"
-                : "border-[#555] bg-transparent text-[#d4d4d4]"
-              : isRage
-                ? "border-[#ff3333] bg-[#2a0808]/30 shadow-[4px_4px_0px_#ff3333]"
-                : "border-[#d4d4d4] bg-[#d4d4d4] text-black shadow-[4px_4px_0px_#555]"
-          } 
-        `}
-        >
-          <div className="absolute -top-3 left-4 bg-inherit px-2 uppercase tracking-wides text-xs opacity-50 font-bold hidden md:block">
-            {isUser ? "YOU" : "HOST"}
-          </div>
-          <div
-            className={`whitespace-pre-wrap leading-relaxed ${!isUser && "font-sans text-[0.95em]"}`}
-          >
-            {msg.content}
-            {isStreaming && (
-              <span
-                className={`inline-block w-2 items-center justify-center border-b-2 ml-1 animate-pulse ${isRage ? "border-[#ff3333]" : "border-black"}`}
-              >
-                _
-              </span>
-            )}
-          </div>
-        </div>
-      </div>
+      <DiagnosticsModal
+        diagnosis={diagnosis}
+        rageMode={rageMode}
+        onClose={() => setDiagnosis(null)}
+      />
     </div>
   );
 }
