@@ -1,6 +1,6 @@
 module github.com/xeuxdev/zerostar-backend
 
-go 1.25.4
+go 1.25.0
 
 require (
 	cloud.google.com/go v0.116.0 // indirect
