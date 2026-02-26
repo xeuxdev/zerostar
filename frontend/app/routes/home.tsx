@@ -56,7 +56,8 @@ export default function Home() {
     setHistory(newHistory);
 
     try {
-      const res = await fetch("/api/v1/chat", {
+      const baseUrl = import.meta.env.VITE_API_URL || "";
+      const res = await fetch(`${baseUrl}/api/v1/chat`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ history, message: userMsg }),
@@ -130,7 +131,8 @@ export default function Home() {
 
     setIsDiagnosing(true);
     try {
-      const res = await fetch("/api/v1/diagnose", {
+      const baseUrl = import.meta.env.VITE_API_URL || "";
+      const res = await fetch(`${baseUrl}/api/v1/diagnose`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ history }),
