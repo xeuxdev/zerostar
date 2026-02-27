@@ -1,4 +1,4 @@
-import { Activity, Ghost, Skull } from "lucide-react";
+import { Activity, Skull } from "lucide-react";
 import { Button } from "~/components/ui/button";
 
 export function ChatHeader({
@@ -14,7 +14,7 @@ export function ChatHeader({
 }) {
   return (
     <header
-      className={`p-4 md:p-6 border-b-[3px] flex items-center justify-between shrink-0 transition-colors duration-700 ${
+      className={`p-4 md:p-6 border-b-[3px] flex items-center justify-between shrink-0 transition-colors duration-700 flex-wrap gap-3 ${
         rageMode
           ? "border-[#ff3333] shadow-[0_4px_30px_rgba(255,51,51,0.2)]"
           : "border-[#333]"
@@ -24,12 +24,16 @@ export function ChatHeader({
         <div
           className={`p-2 rounded-sm ${
             rageMode ? "bg-[#ff3333] text-black" : "bg-[#d4d4d4] text-black"
-          } uppercase font-black tracking-tighter text-2xl`}
+          } uppercase font-black tracking-tighter text-2xl shrink-0`}
         >
           {rageMode ? (
-            <Skull className="w-6 h-6 animate-pulse" />
+            <Skull className="size-6 animate-pulse" />
           ) : (
-            <Ghost className="w-6 h-6" />
+            <img
+              src="/logo-3.png"
+              alt="ZeroStar"
+              className="size-6 mix-blend-multiply opacity-80 shrink-0"
+            />
           )}
         </div>
         <div>
@@ -45,16 +49,16 @@ export function ChatHeader({
       <Button
         onClick={onDiagnose}
         disabled={isDiagnosing || historyLength === 0}
-        className={`uppercase font-bold tracking-widest px-6 py-4 rounded-none border-2 transition-all
+        className={`uppercase font-bold tracking-widest px-3 py-2 md:px-6 md:py-4 text-xs md:text-sm rounded-none border-2 transition-all flex items-center
           ${
             rageMode
               ? "bg-[#1a0505] border-[#ff3333] text-[#ff3333] hover:bg-[#ff3333] hover:text-[#1a0505]"
               : "bg-transparent border-[#d4d4d4] text-[#d4d4d4] hover:bg-[#0f0f0f] hover:text-[#0f0f0f]"
-          } disabled:opacity-30 disabled:cursor-not-allowed hidden md:flex`}
+          } disabled:opacity-30 disabled:cursor-not-allowed`}
       >
         {isDiagnosing ? "Analyzing..." : "Diagnose"}
         <Activity
-          className={`ml-2 w-4 h-4 ${isDiagnosing && "animate-spin"}`}
+          className={`ml-2 size-3 md:size-4 ${isDiagnosing && "animate-spin"}`}
         />
       </Button>
     </header>

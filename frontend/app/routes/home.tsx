@@ -1,6 +1,5 @@
 import type { Route } from "./+types/home";
 import { useState, useRef, useEffect } from "react";
-import { Ghost } from "lucide-react";
 
 import { ChatHeader } from "~/components/chat/header";
 import { ChatInputFooter } from "~/components/chat/input-footer";
@@ -22,8 +21,16 @@ export default function Home() {
   const [isDiagnosing, setIsDiagnosing] = useState(false);
   const [diagnosis, setDiagnosis] = useState<string | null>(null);
   const [rageMode, setRageMode] = useState(false);
+  const [showIntro, setShowIntro] = useState(true);
 
   const [currentStream, setCurrentStream] = useState("");
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowIntro(false);
+    }, 2500);
+    return () => clearTimeout(timer);
+  }, []);
 
   const scrollRef = useRef<HTMLDivElement>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
@@ -152,11 +159,30 @@ export default function Home() {
 
   return (
     <div
-      className={`h-dvh w-full flex flex-col overflow-hidden font-mono text-base transition-colors duration-1000 ${
+      className={`relative h-dvh w-full flex flex-col overflow-hidden font-mono text-base transition-colors duration-1000 ${
         rageMode ? "bg-[#1a0505] text-[#ff3333]" : "bg-[#0f0f0f] text-[#d4d4d4]"
       }`}
       style={{ fontFamily: "'Space Mono', monospace" }}
     >
+      {/* Intro Animation Overlay */}
+      <div
+        className={`absolute inset-0 z-50 flex flex-col items-center justify-center bg-[#0f0f0f] transition-all duration-1000 pointer-events-none ease-in-out ${
+          showIntro ? "opacity-100" : "opacity-0 invisible blur-lg"
+        }`}
+      >
+        <img
+          src="/logo-3.png"
+          alt="ZeroStar Logo"
+          className="w-32 h-32 md:w-48 md:h-48 invert mix-blend-lighten opacity-90 animate-pulse"
+        />
+        <h1 className="mt-8 text-2xl md:text-5xl font-black uppercase tracking-[0.2em] text-[#d4d4d4]">
+          ZeroStar
+        </h1>
+        <p className="mt-4 text-xs md:text-sm tracking-[0.3em] uppercase opacity-40">
+          Initializing apathy module...
+        </p>
+      </div>
+
       <ChatHeader
         rageMode={rageMode}
         isDiagnosing={isDiagnosing}
@@ -171,8 +197,12 @@ export default function Home() {
           ref={scrollRef}
         >
           {history.length === 0 && (
-            <div className="flex flex-col items-center justify-center min-h-[40vh] text-center opacity-40 select-none">
-              <Ghost className="w-24 h-24 mb-6 stroke-1" />
+            <div className="flex flex-col items-center justify-center min-h-[40vh] text-center select-none transition-opacity duration-1000 delay-500">
+              <img
+                src="/logo-3-1.png"
+                alt="Ghost"
+                className="w-24 h-24 mb-6 invert mix-blend-lighten opacity-80 animate-pulse"
+              />
               <p className="text-xl md:text-3xl tracking-widest uppercase mb-2">
                 Speak
               </p>
@@ -210,12 +240,9 @@ export default function Home() {
       <ChatInputFooter
         rageMode={rageMode}
         isSending={isSending}
-        isDiagnosing={isDiagnosing}
-        historyLength={history.length}
         inputVal={inputVal}
         setInputVal={setInputVal}
         handleSend={handleSend}
-        onDiagnose={handleDiagnose}
       />
 
       <DiagnosticsModal

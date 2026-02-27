@@ -1,25 +1,19 @@
+import { Flame, Send } from "lucide-react";
+import { useEffect, useRef } from "react";
 import { Button } from "~/components/ui/button";
-import { Send, Flame } from "lucide-react";
-import { useRef, useEffect } from "react";
 
 export function ChatInputFooter({
   rageMode,
   isSending,
-  isDiagnosing,
-  historyLength,
   inputVal,
   setInputVal,
   handleSend,
-  onDiagnose,
 }: {
   rageMode: boolean;
   isSending: boolean;
-  isDiagnosing: boolean;
-  historyLength: number;
   inputVal: string;
   setInputVal: (val: string) => void;
   handleSend: () => void;
-  onDiagnose: () => void;
 }) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -47,13 +41,13 @@ export function ChatInputFooter({
         <div className="flex-1 relative group w-full">
           <textarea
             ref={textareaRef}
-            className={`block w-full min-h-15 max-h-50 resize-none border-[3px] rounded-none p-4 pr-16 focus:outline-none transition-colors no-scrollbar [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden
+            className={`block w-full min-h-15 max-h-50 resize-none border-[3px] rounded-none p-4 pr-16 focus:outline-none transition-colors no-scrollbar [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden placeholder:whitespace-nowrap
               ${
                 rageMode
                   ? "bg-transparent border-[#ff3333] text-[#ff3333] placeholder:text-[#ff3333]/50 focus:bg-[#330a0a]"
                   : "bg-transparent border-[#555] text-white focus:border-[#d4d4d4]"
               }`}
-            placeholder="What's your weak excuse..."
+            placeholder="What's on your mind?"
             value={inputVal}
             onChange={(e) => {
               setInputVal(e.target.value);
@@ -79,7 +73,7 @@ export function ChatInputFooter({
           <Button
             type="submit"
             disabled={isSending || !inputVal.trim()}
-            className={`absolute right-1 bottom-1 h-12 w-12 shrink-0 rounded-none flex items-center justify-center border-2 transition-all
+            className={`absolute right-1 bottom-1 h-12 w-12 shrink-0 rounded-none flex items-center justify-center border-2 transition-all z-10
               ${
                 rageMode
                   ? "bg-[#ff3333] text-[#1a0505] border-[#ff3333] hover:bg-[#cc0000]"
@@ -90,22 +84,6 @@ export function ChatInputFooter({
           </Button>
         </div>
       </form>
-
-      {/* Mobile Diagnose Button */}
-      <div className="w-full max-w-4xl mx-auto mt-4 md:hidden">
-        <Button
-          onClick={onDiagnose}
-          disabled={isDiagnosing || historyLength === 0}
-          className={`uppercase w-full font-bold tracking-widest px-6 py-4 rounded-none border-2 transition-all
-            ${
-              rageMode
-                ? "bg-[#1a0505] border-[#ff3333] text-[#ff3333] hover:bg-[#ff3333] hover:text-[#1a0505]"
-                : "bg-transparent border-[#d4d4d4] text-[#d4d4d4] hover:bg-[#0f0f0f] hover:text-[#d4d4d4]"
-            } disabled:opacity-30`}
-        >
-          {isDiagnosing ? "Analyzing..." : "Diagnose"}
-        </Button>
-      </div>
     </footer>
   );
 }
