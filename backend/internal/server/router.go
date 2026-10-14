@@ -29,7 +29,7 @@ func New(
 	r.Use(appmiddleware.Logger(log))
 	r.Use(chimiddleware.StripSlashes)
 
-	// CORS – configured for the frontend origin(s)
+	// CORS: configured for the frontend origin(s)
 	c := cors.New(cors.Options{
 		AllowedOrigins:   allowedOrigins,
 		AllowedMethods:   []string{"GET", "POST", "OPTIONS"},
@@ -40,10 +40,10 @@ func New(
 	})
 	r.Use(c.Handler)
 
-	// ── Health check (not rate-limited; used by infra) ─────────────────────────
+	// Health check (not rate-limited; used by infra)
 	r.Get("/health", handler.Health)
 
-	// ── API v1 – rate-limited ─────────────────────────────────────────────────
+	// API v1: rate-limited
 	r.Group(func(r chi.Router) {
 		r.Use(rateLimiter.Handler)
 
