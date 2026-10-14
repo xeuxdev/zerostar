@@ -14,7 +14,7 @@ export function ChatHeader({
 }) {
   return (
     <header
-      className={`p-4 md:p-6 border-b-[3px] flex items-center justify-between shrink-0 transition-[border-color,box-shadow,background-color] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] flex-wrap gap-3 ${
+      className={`p-4 md:p-6 border-b-[3px] flex items-center justify-between shrink-0 transition-[border-color,box-shadow,background-color] duration-300 ease-out flex-wrap gap-3 ${
         rageMode
           ? "border-[#ff3333] bg-[#140303] shadow-[0_4px_30px_rgba(255,51,51,0.2)]"
           : "border-[#333] bg-[#0f0f0f]"
@@ -50,7 +50,7 @@ export function ChatHeader({
         onClick={onDiagnose}
         disabled={isDiagnosing || historyLength === 0}
         aria-label="Generate clinical diagnosis summary"
-        className={`uppercase font-bold tracking-widest px-4 py-2 md:px-6 md:py-3.5 text-xs md:text-sm rounded-none border-2 transition-[transform,background-color,border-color,color] duration-160 ease-[cubic-bezier(0.23,1,0.32,1)] active:scale-[0.97] flex items-center cursor-pointer
+        className={`uppercase font-bold tracking-widest px-4 py-2 md:px-6 md:py-3.5 text-xs md:text-sm rounded-none border-2 transition-[transform,background-color,border-color,color] duration-160 ease-out active:scale-[0.97] flex items-center cursor-pointer
           ${
             rageMode
               ? "bg-[#1a0505] border-[#ff3333] text-[#ff3333] hover:bg-[#ff3333] hover:text-[#1a0505]"

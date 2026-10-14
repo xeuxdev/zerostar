@@ -49,13 +49,13 @@ export function DiagnosticsModal({
       role="dialog"
       aria-modal="true"
       aria-labelledby="diagnosis-modal-title"
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-8 bg-black/85 backdrop-blur-sm transition-opacity duration-180 ease-[cubic-bezier(0.23,1,0.32,1)]"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-8 bg-black/85 backdrop-blur-sm transition-opacity duration-180 ease-out"
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose();
       }}
     >
       <div
-        className={`w-full max-w-2xl max-h-[90vh] flex flex-col border-[3px] shadow-2xl overflow-hidden font-mono origin-center transform transition-[transform,opacity,border-color,background-color] duration-180 ease-[cubic-bezier(0.23,1,0.32,1)] animate-in fade-in-0 zoom-in-95
+        className={`w-full max-w-2xl max-h-[90vh] flex flex-col border-[3px] shadow-2xl overflow-hidden font-mono origin-center transform transition-[transform,opacity,border-color,background-color] duration-180 ease-out animate-in fade-in-0 zoom-in-95
         ${
           rageMode
             ? "border-[#ff3333] bg-[#120202] shadow-[0_0_50px_rgba(255,51,51,0.3)]"
@@ -84,7 +84,7 @@ export function DiagnosticsModal({
           <button
             onClick={onClose}
             aria-label="Close diagnosis modal"
-            className={`p-1.5 border border-transparent transition-[transform,opacity,border-color] duration-160 ease-[cubic-bezier(0.23,1,0.32,1)] active:scale-[0.97] hover:border-current cursor-pointer ${
+            className={`p-1.5 border border-transparent transition-[transform,opacity,border-color] duration-160 ease-out active:scale-[0.97] hover:border-current cursor-pointer ${
               rageMode ? "text-[#ff3333]" : "text-[#d4d4d4]"
             }`}
           >
@@ -108,7 +108,10 @@ export function DiagnosticsModal({
                   <ul className="list-disc pl-5 mb-4 space-y-1.5" {...props} />
                 ),
                 ol: ({ ...props }) => (
-                  <ol className="list-decimal pl-5 mb-4 space-y-1.5" {...props} />
+                  <ol
+                    className="list-decimal pl-5 mb-4 space-y-1.5"
+                    {...props}
+                  />
                 ),
                 li: ({ ...props }) => <li {...props} />,
                 h1: ({ ...props }) => (
@@ -177,7 +180,7 @@ export function DiagnosticsModal({
             onClick={handleCopy}
             variant="outline"
             aria-label="Copy diagnosis to clipboard"
-            className={`uppercase font-bold tracking-widest px-4 py-2 text-xs md:text-sm rounded-none border-2 transition-[transform,background-color,border-color,color] duration-160 ease-[cubic-bezier(0.23,1,0.32,1)] active:scale-[0.97] cursor-pointer flex items-center gap-2
+            className={`uppercase font-bold tracking-widest px-4 py-2 text-xs md:text-sm rounded-none border-2 transition-[transform,background-color,border-color,color] duration-160 ease-out active:scale-[0.97] cursor-pointer flex items-center gap-2
               ${
                 rageMode
                   ? "bg-transparent border-[#ff3333] text-[#ff3333] hover:bg-[#ff3333] hover:text-[#120202]"
@@ -199,7 +202,7 @@ export function DiagnosticsModal({
 
           <Button
             onClick={onClose}
-            className={`uppercase font-bold tracking-widest px-6 py-2 text-xs md:text-sm rounded-none border-2 transition-[transform,background-color,border-color,color] duration-160 ease-[cubic-bezier(0.23,1,0.32,1)] active:scale-[0.97] cursor-pointer
+            className={`uppercase font-bold tracking-widest px-6 py-2 text-xs md:text-sm rounded-none border-2 transition-[transform,background-color,border-color,color] duration-160 ease-out active:scale-[0.97] cursor-pointer
               ${
                 rageMode
                   ? "bg-[#ff3333] border-[#ff3333] text-[#120202] hover:bg-[#ff4d4d]"

@@ -194,14 +194,14 @@ export default function Home() {
 
   return (
     <div
-      className={`relative h-dvh w-full flex flex-col overflow-hidden font-mono text-base transition-[background-color,color] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] ${
+      className={`relative h-dvh w-full flex flex-col overflow-hidden font-mono text-base transition-[background-color,color] duration-300 ease-out ${
         rageMode ? "bg-[#120202] text-[#ff3333]" : "bg-[#0f0f0f] text-[#d4d4d4]"
       }`}
     >
       {/* Intro Animation Overlay */}
       <div
         onClick={dismissIntro}
-        className={`absolute inset-0 z-50 flex flex-col items-center justify-center bg-[#0f0f0f] transition-[opacity,filter] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] cursor-pointer select-none ${
+        className={`absolute inset-0 z-50 flex flex-col items-center justify-center bg-[#0f0f0f] transition-[opacity,filter] duration-300 ease-out cursor-pointer select-none ${
           showIntro ? "opacity-100" : "opacity-0 pointer-events-none blur-sm"
         }`}
       >
@@ -271,7 +271,7 @@ export default function Home() {
                   <button
                     key={idx}
                     onClick={() => handleSend(prompt)}
-                    className="text-left text-xs md:text-sm p-3 border-2 border-[#333] hover:border-[#d4d4d4] hover:bg-[#141414] transition-[border-color,background-color,transform] duration-160 ease-[cubic-bezier(0.23,1,0.32,1)] active:scale-[0.98] text-[#bbb] hover:text-[#fff] cursor-pointer"
+                    className="text-left text-xs md:text-sm p-3 border-2 border-[#333] hover:border-[#d4d4d4] hover:bg-[#141414] transition-[border-color,background-color,transform] duration-160 ease-out active:scale-[0.98] text-[#bbb] hover:text-white cursor-pointer"
                   >
                     "{prompt}"
                   </button>

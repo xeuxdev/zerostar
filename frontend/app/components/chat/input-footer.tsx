@@ -31,7 +31,7 @@ export function ChatInputFooter({
 
   return (
     <footer
-      className={`p-4 md:p-6 border-t-[3px] transition-[border-color,background-color] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] ${
+      className={`p-4 md:p-6 border-t-[3px] transition-[border-color,background-color] duration-300 ease-out ${
         rageMode
           ? "border-[#ff3333] bg-[#140303]"
           : "border-[#333] bg-[#0f0f0f]"
@@ -47,7 +47,7 @@ export function ChatInputFooter({
         <div className="flex-1 relative group w-full">
           <textarea
             ref={textareaRef}
-            className={`block w-full min-h-[60px] max-h-[200px] resize-none border-[3px] rounded-none p-4 pr-16 focus:outline-none transition-[border-color,background-color] duration-160 ease-[cubic-bezier(0.23,1,0.32,1)] no-scrollbar [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden placeholder:text-sm md:placeholder:text-base font-mono
+            className={`block w-full min-h-15 max-h-50 resize-none border-[3px] rounded-none p-4 pr-16 focus:outline-none transition-[border-color,background-color] duration-160 ease-out no-scrollbar scrollbar-none [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden placeholder:text-sm md:placeholder:text-base font-mono
               ${
                 rageMode
                   ? "bg-transparent border-[#ff3333] text-[#ff3333] placeholder:text-[#ff3333]/40 focus:bg-[#200505] focus:border-[#ff4d4d]"
@@ -74,7 +74,7 @@ export function ChatInputFooter({
             type="submit"
             disabled={isSending || !inputVal.trim()}
             aria-label="Send message"
-            className={`absolute right-2 bottom-2 h-11 w-11 shrink-0 rounded-none flex items-center justify-center border-2 transition-[transform,background-color,border-color,color] duration-160 ease-[cubic-bezier(0.23,1,0.32,1)] active:scale-[0.97] cursor-pointer z-10
+            className={`absolute right-2 bottom-2 h-11 w-11 shrink-0 rounded-none flex items-center justify-center border-2 transition-[transform,background-color,border-color,color] duration-160 ease-out active:scale-[0.97] cursor-pointer z-10
               ${
                 rageMode
                   ? "bg-[#ff3333] text-[#1a0505] border-[#ff3333] hover:bg-[#ff5555] hover:border-[#ff5555]"

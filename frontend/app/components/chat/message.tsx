@@ -23,7 +23,7 @@ export function ChatMessage({
     <div
       className={`w-full flex ${
         isUser ? "justify-end" : "justify-start"
-      } group mb-5 transition-opacity duration-160 ease-[cubic-bezier(0.23,1,0.32,1)]`}
+      } group mb-5 transition-opacity duration-160 ease-out`}
     >
       <div
         className={`flex gap-3 md:gap-4 max-w-[94%] md:max-w-[82%] ${
